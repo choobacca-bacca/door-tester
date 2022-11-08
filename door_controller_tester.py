@@ -9,12 +9,12 @@ print("Please enter the duration for the run (in seconds): ")
 x = input()
 
 for i in range(int(x)):
-    response = requests.get("http://169.254.170.22/")
-    # response = requests.get("http://google.com")
-    print(response.status_code)
-    if (response.status_code == 200):
+    print(i)
+    try:
+        response = requests.get("http://169.254.170.22/", timeout=10)
+        # response = requests.get("http://google.com")
         success_response = success_response + 1
-    else:
+    except:
         fail_response = fail_response + 1
     time.sleep(1)
 
