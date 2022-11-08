@@ -9,7 +9,7 @@ print("Please enter the duration for the run (in seconds): ")
 x = input()
 
 for i in range(int(x)):
-    print(str(i))
+    # print(str(i))
     try:
         response = requests.get("http://169.254.170.22/", timeout=10)
         # response = requests.get("http://google.com")
