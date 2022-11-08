@@ -9,13 +9,15 @@ print("Please enter the duration for the run (in seconds): ")
 x = input()
 
 for i in range(int(x)):
-    print(i)
+    print(str(i))
     try:
         response = requests.get("http://169.254.170.22/", timeout=10)
         # response = requests.get("http://google.com")
         success_response = success_response + 1
+        print(str(i) + " Success")
     except:
         fail_response = fail_response + 1
+        print(str(i) + " Fail")
     time.sleep(1)
 
 f = open("results.txt", "a")
