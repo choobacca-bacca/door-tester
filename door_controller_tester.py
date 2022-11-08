@@ -18,7 +18,7 @@ for i in range(int(x)):
         fail_response = fail_response + 1
     time.sleep(1)
 
-f = open("demofile2.txt", "a")
+f = open("results.txt", "a")
 f.write("\n")
 f.write("\n")
 f.write("time started: " + str(datetime.datetime.now()))
