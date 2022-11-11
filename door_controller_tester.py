@@ -11,7 +11,9 @@ x = input()
 for i in range(int(x)):
     # print(str(i))
     try:
-        response = requests.get("http://169.254.170.22/", timeout=10)
+        session = requests.Session()
+        session.auth = ("root", "00000000")
+        response = session.get("http://169.254.170.22/digitalinput/0/value", timeout=10 )
         # response = requests.get("http://google.com")
         success_response = success_response + 1
         print(str(i) + " Success")
