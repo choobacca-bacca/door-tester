@@ -3,6 +3,7 @@ from __future__ import annotations
 import requests
 import time
 import datetime
+import xmltodict
 
 import enum
 
@@ -71,6 +72,8 @@ for i in range(int(x)):
         success_response = success_response + 1
         print(str(i) + " Success")
         print(response.content)
+        responseJSON = xmltodict.parse(response.content)
+        print(json.dumps(responseJSON))
     except:
         fail_response = fail_response + 1
         print(str(i) + " Fail")
