@@ -1,0 +1,8 @@
+mqtt:
+  get-topic: "nlb/trl/528523/oth/door/service_lobby_L3_door/data"
+  post-topic: "nlb/trl/528523/oth/door/service_lobby_L3_door/command"
+  api_endpoint: a1i24hje2n1ej1-ats.iot.ap-southeast-1.amazonaws.com
+  cert: /home/ubuntu/.certs/doors/device.pem.crt
+  key: /home/ubuntu/.certs/doors/connect_device_package/private.pem.key
+  root_cert: /home/ubuntu/.certs/doors/Amazon-root-CA-1.pem
+  name: LocalRMFLaptopDoorController
