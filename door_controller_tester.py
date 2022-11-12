@@ -65,8 +65,14 @@ DIPinTwo = ""
 successOne = True
 successTwo = True
 
+formerTime = time.time()
+
 for i in range(int(x)):
     # print(str(i))
+    difference = time.time() - formerTime
+    if (difference < 1):
+        time.sleep(difference)
+
     try:
         session = requests.Session()
         session.auth = ("root", "00000000")
@@ -82,7 +88,7 @@ for i in range(int(x)):
         fail_response = fail_response + 1
         # print(str(i) + " Fail")
         successOne = False
-    time.sleep(1)
+    # time.sleep(1)
 
     try:
         session = requests.Session()
@@ -106,7 +112,7 @@ for i in range(int(x)):
         "door_state_two": DIPinTwo
     }
     try:
-        
+
         # print(config["mqtt"]["post-topic"])
         publish_future, packet_id = mqtt_connection.publish(
             topic=config["mqtt"]["get-topic"],
@@ -118,7 +124,7 @@ for i in range(int(x)):
     except Exception as err:
         print(f"{err}")
 
-    time.sleep(1)
+    # time.sleep(1)
 
 f = open("results.txt", "a")
 f.write("\n")
