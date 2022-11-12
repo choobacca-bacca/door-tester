@@ -70,7 +70,7 @@ for i in range(int(x)):
         # response = requests.get("http://google.com")
         success_response = success_response + 1
         print(str(i) + " Success")
-        print(response)
+        print(response.raw)
     except:
         fail_response = fail_response + 1
         print(str(i) + " Fail")
