@@ -60,6 +60,8 @@ print("Connected!")
 
 print("Please enter the duration for the run (in seconds): ")
 x = input()
+DIPinOne = ""
+DIPinTwo = ""
 
 for i in range(int(x)):
     # print(str(i))
@@ -74,6 +76,7 @@ for i in range(int(x)):
         print(response.content)
         responseJSON = xmltodict.parse(response.content)
         print(json.dumps(responseJSON))
+        DIPinOne = responseJSON["ADAM-6052"]["DI"]["ID"]
     except:
         fail_response = fail_response + 1
         print(str(i) + " Fail")
@@ -81,7 +84,7 @@ for i in range(int(x)):
 
     data = {
         "door_name": "service_lobby_L3_door",
-        "door_state": 1
+        "door_state": DIPinOne
     }
     try:
         print(config["mqtt"]["post-topic"])
