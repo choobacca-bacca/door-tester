@@ -68,7 +68,6 @@ successTwo = True
 formerTime = time.time()
 
 for i in range(int(x)):
-    # print(str(i))
     time.sleep(1)
 
     try:
@@ -76,32 +75,21 @@ for i in range(int(x)):
         session.auth = ("root", "00000000")
         response = session.get(
             "http://169.254.170.22/digitalinput/0/value", timeout=10)
-        # response = requests.get("http://google.com")
-        success_response = success_response + 1
-        # print(str(i) + " Success")
         successOne = True
         responseJSON = xmltodict.parse(response.content)
         DIPinOne = responseJSON["ADAM-6052"]["DI"]["ID"]
     except:
-        fail_response = fail_response + 1
-        # print(str(i) + " Fail")
         successOne = False
-    # time.sleep(1)
 
     try:
         session = requests.Session()
         session.auth = ("root", "00000000")
         response = session.get(
             "http://169.254.170.22/digitalinput/1/value", timeout=10)
-        # response = requests.get("http://google.com")
-        success_response = success_response + 1
-        # print(str(i) + " Success")
         successTwo = True
         responseJSON = xmltodict.parse(response.content)
         DIPinTwo = responseJSON["ADAM-6052"]["DI"]["ID"]
     except:
-        fail_response = fail_response + 1
-        # print(str(i) + " Fail")
         successTwo = False
 
     data = {
@@ -110,19 +98,19 @@ for i in range(int(x)):
         "door_state_two": DIPinTwo
     }
     try:
-
-        # print(config["mqtt"]["post-topic"])
         publish_future, packet_id = mqtt_connection.publish(
             topic=config["mqtt"]["get-topic"],
             payload=json.dumps(data),
             qos=mqtt.QoS.AT_LEAST_ONCE,
         )
         if (successTwo and successOne):
-            print(str(i) + "successful")
+            print(str(i) + " Successful")
+            success_response = success_response + 1
+        else:
+            print(str(i) + " Fail")
+            fail_response = fail_response + 1
     except Exception as err:
         print(f"{err}")
-
-    # time.sleep(1)
 
 f = open("results.txt", "a")
 f.write("\n")
