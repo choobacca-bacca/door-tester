@@ -69,9 +69,7 @@ formerTime = time.time()
 
 for i in range(int(x)):
     # print(str(i))
-    difference = time.time() - formerTime
-    if (difference < 1):
-        time.sleep(difference)
+    time.sleep(1)
 
     try:
         session = requests.Session()
