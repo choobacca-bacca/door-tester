@@ -62,6 +62,8 @@ print("Please enter the duration for the run (in seconds): ")
 x = input()
 DIPinOne = ""
 DIPinTwo = ""
+successOne = True
+successTwo = True
 
 for i in range(int(x)):
     # print(str(i))
@@ -72,12 +74,14 @@ for i in range(int(x)):
             "http://169.254.170.22/digitalinput/0/value", timeout=10)
         # response = requests.get("http://google.com")
         success_response = success_response + 1
-        print(str(i) + " Success")
+        # print(str(i) + " Success")
+        successOne = True
         responseJSON = xmltodict.parse(response.content)
         DIPinOne = responseJSON["ADAM-6052"]["DI"]["ID"]
     except:
         fail_response = fail_response + 1
-        print(str(i) + " Fail")
+        # print(str(i) + " Fail")
+        successOne = False
     time.sleep(1)
 
     try:
@@ -87,13 +91,14 @@ for i in range(int(x)):
             "http://169.254.170.22/digitalinput/1/value", timeout=10)
         # response = requests.get("http://google.com")
         success_response = success_response + 1
-        print(str(i) + " Success")
+        # print(str(i) + " Success")
+        successTwo = True
         responseJSON = xmltodict.parse(response.content)
         DIPinTwo = responseJSON["ADAM-6052"]["DI"]["ID"]
     except:
         fail_response = fail_response + 1
-        print(str(i) + " Fail")
-    time.sleep(1)
+        # print(str(i) + " Fail")
+        successTwo = False
 
     data = {
         "door_name": "service_lobby_L3_door",
@@ -101,12 +106,15 @@ for i in range(int(x)):
         "door_state_two": DIPinTwo
     }
     try:
-        print(config["mqtt"]["post-topic"])
+        
+        # print(config["mqtt"]["post-topic"])
         publish_future, packet_id = mqtt_connection.publish(
             topic=config["mqtt"]["get-topic"],
             payload=json.dumps(data),
             qos=mqtt.QoS.AT_LEAST_ONCE,
         )
+        if (successTwo and successOne):
+            print(str(i) + "successful")
     except Exception as err:
         print(f"{err}")
 
