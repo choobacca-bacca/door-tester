@@ -68,6 +68,7 @@ session.auth = ("root", "00000000")
 for i in range(3600):
     for door in config["doors"]:
         try:
+            print(config["doors"][door]+"/digitalinput/0/value")
             response = session.get(
                 config["doors"][door]+"/digitalinput/0/value", timeout=10)
             successOne = True
