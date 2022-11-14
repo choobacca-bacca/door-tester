@@ -70,12 +70,16 @@ successTwo = True
 session = requests.Session()
 session.auth = ("root", "00000000")
 
+max = 31
+start = time.time()
+
+
 for i in range(3600):
-    time.sleep(1)
+#    time.sleep(1)
     for door in config["doors"]:
         try:
             response = session.get(
-                config["doors"][door]+"/digitalinput/0/value", timeout=4)
+                config["doors"][door]+"/digitalinput/0/value", timeout=5)
             successOne = True
             print(response.status_code)
             responseJSON = xmltodict.parse(response.content)
@@ -87,7 +91,7 @@ for i in range(3600):
 
         try:
             response = session.get(
-                config["doors"][door]+"/digitalinput/1/value", timeout=4)
+                config["doors"][door]+"/digitalinput/1/value", timeout=5)
             successTwo = True
             print(response.status_code)
             responseJSON = xmltodict.parse(response.content)
@@ -130,6 +134,12 @@ for i in range(3600):
         #     print(f"{err}")
         #     print("error for mqtt publish")
     print(i)
+    time.sleep(0.1)
+
+    remaining = max + start - time.time()
+
+    if remaining <= 0:
+        break
 
         # try:
         #     subscribe_future, packet_id = mqtt_connection.subscribe(
