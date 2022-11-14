@@ -75,6 +75,7 @@ for i in range(3600):
             DIPinOne = responseJSON["ADAM-6052"]["DI"]["ID"]
         except:
             successOne = False
+            print("error for restful call 1")
 
         try:
             response = session.get(
@@ -84,6 +85,7 @@ for i in range(3600):
             DIPinTwo = responseJSON["ADAM-6052"]["DI"]["ID"]
         except:
             successTwo = False
+            print("error for restful call 2")
 
         door_mode = 0
 
@@ -111,11 +113,13 @@ for i in range(3600):
             )
             print("published to topic " + config["mqtt"]["get-topic"] +
                   config["doors"][door] + "/data")
-        except Exception as err:
-            print(f"{err}")
         except (KeyboardInterrupt, SystemExit):
             print ("\nkeyboardinterrupt caught (again)")
             print ("\n...Program Stopped Manually!")
             raise
+        except Exception as err:
+            print(f"{err}")
+            print("error for mqtt publish")
+        
 
     print(i)
