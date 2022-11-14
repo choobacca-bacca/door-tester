@@ -73,9 +73,10 @@ session.auth = ("root", "00000000")
 max = 31
 start = time.time()
 interval = 0.5
+print(start)
 
 
-for i in range(3600):
+for i in range(1):
 #    time.sleep(1)
     if(time.time() - start > interval):
         for door in config["doors"]:
