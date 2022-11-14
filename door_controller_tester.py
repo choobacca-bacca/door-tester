@@ -75,7 +75,7 @@ for i in range(3600):
     for door in config["doors"]:
         try:
             response = session.get(
-                config["doors"][door]+"/digitalinput/0/value", timeout=1)
+                config["doors"][door]+"/digitalinput/0/value", timeout=4)
             successOne = True
             print(response.status_code)
             responseJSON = xmltodict.parse(response.content)
@@ -87,7 +87,7 @@ for i in range(3600):
 
         try:
             response = session.get(
-                config["doors"][door]+"/digitalinput/1/value", timeout=1)
+                config["doors"][door]+"/digitalinput/1/value", timeout=4)
             successTwo = True
             print(response.status_code)
             responseJSON = xmltodict.parse(response.content)
