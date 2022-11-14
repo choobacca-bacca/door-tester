@@ -120,8 +120,7 @@ for i in range(3600):
         except Exception as err:
             print(f"{err}")
             print("error for mqtt publish")
-            print("published to topic " + config["mqtt"]["topic"] +
-                  config["doors"][door] + "/data")
         
 
     print(i)
+    time.sleep(1)
