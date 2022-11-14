@@ -91,9 +91,9 @@ for i in range(3600):
         door_mode = 0
 
         if (successOne and successTwo):
-            if (DIPinOne == "1"):
+            if (DIPinTwo == "1"):
                 door_mode = 0  # door is closed
-            elif (DIPinTwo == "1"):
+            elif (DIPinOne == "1"):
                 door_mode = 2  # door is open
             else:
                 door_mode = 1  # door is moving
