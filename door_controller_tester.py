@@ -113,5 +113,9 @@ for i in range(3600):
                   config["doors"][door] + "/data")
         except Exception as err:
             print(f"{err}")
+        except (KeyboardInterrupt, SystemExit):
+            print ("\nkeyboardinterrupt caught (again)")
+            print ("\n...Program Stopped Manually!")
+            raise
 
     print(i)
