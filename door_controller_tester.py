@@ -22,7 +22,7 @@ fail_response = 0
 with open("config.yaml", 'r') as stream:
     try:
         config = yaml.safe_load(stream)
-        print(config)
+        # print(config)
     except yaml.YAMLError as exc:
         print(exc)
 
@@ -65,16 +65,13 @@ DIPinTwo = ""
 successOne = True
 successTwo = True
 
-formerTime = time.time()
+session = requests.Session()
+session.auth = ("root", "00000000")
 
-for i in range(int(x)):
-    time.sleep(1)
-
+for door in config["doors"]:
     try:
-        session = requests.Session()
-        session.auth = ("root", "00000000")
         response = session.get(
-            "http://169.254.170.22/digitalinput/0/value", timeout=10)
+            config["doors"][door]+"/digitalinput/0/value", timeout=10)
         successOne = True
         responseJSON = xmltodict.parse(response.content)
         DIPinOne = responseJSON["ADAM-6052"]["DI"]["ID"]
@@ -82,41 +79,37 @@ for i in range(int(x)):
         successOne = False
 
     try:
-        session = requests.Session()
-        session.auth = ("root", "00000000")
         response = session.get(
-            "http://169.254.170.22/digitalinput/1/value", timeout=10)
+            config["doors"][door]+"/digitalinput/1/value", timeout=10)
         successTwo = True
         responseJSON = xmltodict.parse(response.content)
         DIPinTwo = responseJSON["ADAM-6052"]["DI"]["ID"]
     except:
         successTwo = False
+    
+    door_mode = 0
 
+    if (successOne and successTwo):
+        if (DIPinOne == 1):
+            door_mode = 0 #door is closed
+        elif (DIPinTwo == 1):
+            door_mode = 2 #door is open
+        else:
+            door_mode = 1 #door is moving
+    else:
+        door_mode = 3
+    
     data = {
-        "door_name": "service_lobby_L3_door",
-        "door_state": DIPinOne,
-        "door_state_two": DIPinTwo
+        "door_name": door,
+        "current_mode": door_mode
     }
+
     try:
         publish_future, packet_id = mqtt_connection.publish(
-            topic=config["mqtt"]["get-topic"],
+            topic=(config["mqtt"]["get-topic"] +
+                   config["doors"][door] + "/data"),
             payload=json.dumps(data),
             qos=mqtt.QoS.AT_LEAST_ONCE,
         )
-        if (successTwo and successOne):
-            print(str(i) + " Successful")
-            success_response = success_response + 1
-        else:
-            print(str(i) + " Fail")
-            fail_response = fail_response + 1
     except Exception as err:
         print(f"{err}")
-
-f = open("results.txt", "a")
-f.write("\n")
-f.write("\n")
-f.write("time started: " + str(datetime.datetime.now()))
-f.write("\n")
-f.write("successful responses = " + str(success_response) + "\n")
-f.write("failed responses = " + str(fail_response))
-f.close()
