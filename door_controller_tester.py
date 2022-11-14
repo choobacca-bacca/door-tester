@@ -58,8 +58,6 @@ except:
 
 print("Connected!")
 
-print("Please enter the duration for the run (in seconds): ")
-x = input()
 DIPinOne = ""
 DIPinTwo = ""
 successOne = True
@@ -68,48 +66,51 @@ successTwo = True
 session = requests.Session()
 session.auth = ("root", "00000000")
 
-for door in config["doors"]:
-    try:
-        response = session.get(
-            config["doors"][door]+"/digitalinput/0/value", timeout=10)
-        successOne = True
-        responseJSON = xmltodict.parse(response.content)
-        DIPinOne = responseJSON["ADAM-6052"]["DI"]["ID"]
-    except:
-        successOne = False
+for i in 3600:
+    for door in config["doors"]:
+        try:
+            response = session.get(
+                config["doors"][door]+"/digitalinput/0/value", timeout=10)
+            successOne = True
+            responseJSON = xmltodict.parse(response.content)
+            DIPinOne = responseJSON["ADAM-6052"]["DI"]["ID"]
+        except:
+            successOne = False
 
-    try:
-        response = session.get(
-            config["doors"][door]+"/digitalinput/1/value", timeout=10)
-        successTwo = True
-        responseJSON = xmltodict.parse(response.content)
-        DIPinTwo = responseJSON["ADAM-6052"]["DI"]["ID"]
-    except:
-        successTwo = False
-    
-    door_mode = 0
+        try:
+            response = session.get(
+                config["doors"][door]+"/digitalinput/1/value", timeout=10)
+            successTwo = True
+            responseJSON = xmltodict.parse(response.content)
+            DIPinTwo = responseJSON["ADAM-6052"]["DI"]["ID"]
+        except:
+            successTwo = False
+        
+        door_mode = 0
 
-    if (successOne and successTwo):
-        if (DIPinOne == 1):
-            door_mode = 0 #door is closed
-        elif (DIPinTwo == 1):
-            door_mode = 2 #door is open
+        if (successOne and successTwo):
+            if (DIPinOne == 1):
+                door_mode = 0 #door is closed
+            elif (DIPinTwo == 1):
+                door_mode = 2 #door is open
+            else:
+                door_mode = 1 #door is moving
         else:
-            door_mode = 1 #door is moving
-    else:
-        door_mode = 3
-    
-    data = {
-        "door_name": door,
-        "current_mode": door_mode
-    }
+            door_mode = 3
+        
+        data = {
+            "door_name": door,
+            "current_mode": door_mode
+        }
 
-    try:
-        publish_future, packet_id = mqtt_connection.publish(
-            topic=(config["mqtt"]["get-topic"] +
-                   config["doors"][door] + "/data"),
-            payload=json.dumps(data),
-            qos=mqtt.QoS.AT_LEAST_ONCE,
-        )
-    except Exception as err:
-        print(f"{err}")
+        try:
+            publish_future, packet_id = mqtt_connection.publish(
+                topic=(config["mqtt"]["get-topic"] +
+                    config["doors"][door] + "/data"),
+                payload=json.dumps(data),
+                qos=mqtt.QoS.AT_LEAST_ONCE,
+            )
+        except Exception as err:
+            print(f"{err}")
+    
+    print(i)
