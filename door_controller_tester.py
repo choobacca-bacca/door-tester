@@ -76,8 +76,9 @@ interval = 0.5
 print(start)
 
 
-for i in range(1):
-#    time.sleep(1)
+for i in range(5):
+#    time.sleep(1
+    print(str(time.time() - start))
     if(time.time() - start > interval):
         for door in config["doors"]:
             try:
