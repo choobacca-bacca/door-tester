@@ -71,11 +71,11 @@ session = requests.Session()
 session.auth = ("root", "00000000")
 
 for i in range(3600):
-    time.sleep(5)
+    time.sleep(1)
     for door in config["doors"]:
         try:
             response = session.get(
-                config["doors"][door]+"/digitalinput/0/value", timeout=10)
+                config["doors"][door]+"/digitalinput/0/value", timeout=1)
             successOne = True
             responseJSON = xmltodict.parse(response.content)
             DIPinOne = responseJSON["ADAM-6052"]["DI"]["ID"]
@@ -85,7 +85,7 @@ for i in range(3600):
 
         try:
             response = session.get(
-                config["doors"][door]+"/digitalinput/1/value", timeout=10)
+                config["doors"][door]+"/digitalinput/1/value", timeout=1)
             successTwo = True
             responseJSON = xmltodict.parse(response.content)
             DIPinTwo = responseJSON["ADAM-6052"]["DI"]["ID"]
@@ -110,36 +110,37 @@ for i in range(3600):
             "current_mode": door_mode
         }
 
-        try:
-            publish_future, packet_id = mqtt_connection.publish(
-                topic=(config["mqtt"]["topic"] +
-                       door + "/data"),
-                payload=json.dumps(data),
-                qos=mqtt.QoS.AT_LEAST_ONCE,
-            )
-            print("published to topic " + config["mqtt"]["topic"] +
-                  door + "/data")
-        except (KeyboardInterrupt, SystemExit):
-            print ("\nkeyboardinterrupt caught (again)")
-            print ("\n...Program Stopped Manually!")
-            raise
-        except Exception as err:
-            print(f"{err}")
-            print("error for mqtt publish")
+        # try:
+        #     publish_future, packet_id = mqtt_connection.publish(
+        #         topic=(config["mqtt"]["topic"] +
+        #                door + "/data"),
+        #         payload=json.dumps(data),
+        #         qos=mqtt.QoS.AT_LEAST_ONCE,
+        #     )
+        #     print("published to topic " + config["mqtt"]["topic"] +
+        #           door + "/data")
+        # except (KeyboardInterrupt, SystemExit):
+        #     print ("\nkeyboardinterrupt caught (again)")
+        #     print ("\n...Program Stopped Manually!")
+        #     raise
+        # except Exception as err:
+        #     print(f"{err}")
+        #     print("error for mqtt publish")
+    print(i)
 
-        try:
-            subscribe_future, packet_id = mqtt_connection.subscribe(
-                topic=config["mqtt"]["topic"] + door + "/command",
-                qos=mqtt.QoS.AT_LEAST_ONCE,
-                callback=on_message_received,
-            )
-            if (response["requested_mode"] == "1"):
-                door_request = {"DO0=" + response["requested_mode"]}
-                session.post(config["doors"][door]+"/digitaloutput/all/value", timeout=10, data="D01=0")
-                session.post(config["doors"][door]+"/digitaloutput/all/value", timeout=10, data=door_request)
+        # try:
+        #     subscribe_future, packet_id = mqtt_connection.subscribe(
+        #         topic=config["mqtt"]["topic"] + door + "/command",
+        #         qos=mqtt.QoS.AT_LEAST_ONCE,
+        #         callback=on_message_received,
+        #     )
+        #     if (response["requested_mode"] == "1"):
+        #         door_request = {"DO0=" + response["requested_mode"]}
+        #         session.post(config["doors"][door]+"/digitaloutput/all/value", timeout=10, data="D01=0")
+        #         session.post(config["doors"][door]+"/digitaloutput/all/value", timeout=10, data=door_request)
 
-        except Exception as err:
-            print(f"{err}")
-            print("error for mqtt publish")
+        # except Exception as err:
+        #     print(f"{err}")
+        #     print("error for mqtt publish")
 
     
