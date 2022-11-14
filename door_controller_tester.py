@@ -75,7 +75,7 @@ start = time.time()
 interval = 0.5
 
 
-for i in range(1):
+for i in range(3600):
 #    time.sleep(1)
     if(time.time() - start > interval):
         for door in config["doors"]:
