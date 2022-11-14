@@ -19,6 +19,11 @@ import sys
 success_response = 0
 fail_response = 0
 
+def on_message_received(topic, payload, dup, qos, retain, **kwargs):
+    global response
+    response = json.loads(payload)
+    return response
+
 with open("config.yaml", 'r') as stream:
     try:
         config = yaml.safe_load(stream)
