@@ -66,7 +66,7 @@ successTwo = True
 session = requests.Session()
 session.auth = ("root", "00000000")
 
-for i in 3600:
+for i in range(3600):
     for door in config["doors"]:
         try:
             response = session.get(
