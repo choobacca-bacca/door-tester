@@ -22,7 +22,6 @@ fail_response = 0
 with open("config.yaml", 'r') as stream:
     try:
         config = yaml.safe_load(stream)
-        # print(config)
     except yaml.YAMLError as exc:
         print(exc)
 
@@ -85,19 +84,19 @@ for i in range(3600):
             DIPinTwo = responseJSON["ADAM-6052"]["DI"]["ID"]
         except:
             successTwo = False
-        
+
         door_mode = 0
 
         if (successOne and successTwo):
             if (DIPinOne == 1):
-                door_mode = 0 #door is closed
+                door_mode = 0  # door is closed
             elif (DIPinTwo == 1):
-                door_mode = 2 #door is open
+                door_mode = 2  # door is open
             else:
-                door_mode = 1 #door is moving
+                door_mode = 1  # door is moving
         else:
             door_mode = 3
-        
+
         data = {
             "door_name": door,
             "current_mode": door_mode
@@ -106,11 +105,13 @@ for i in range(3600):
         try:
             publish_future, packet_id = mqtt_connection.publish(
                 topic=(config["mqtt"]["get-topic"] +
-                    config["doors"][door] + "/data"),
+                       config["doors"][door] + "/data"),
                 payload=json.dumps(data),
                 qos=mqtt.QoS.AT_LEAST_ONCE,
             )
+            print("published to topic " + config["mqtt"]["get-topic"] +
+                  config["doors"][door] + "/data")
         except Exception as err:
             print(f"{err}")
-    
+
     print(i)
