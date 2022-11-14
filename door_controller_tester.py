@@ -74,9 +74,9 @@ max = 31
 start = time.time()
 interval = 0.5
 print(start)
+i = 0
 
-
-for i in range(5):
+while(i < 3600):
 #    time.sleep(1
     print(str(time.time() - start))
     if(time.time() - start > interval):
@@ -121,6 +121,7 @@ for i in range(5):
                 "current_mode": door_mode
             }
         start = time.time()
+        i += 1
 
         # try:
         #     publish_future, packet_id = mqtt_connection.publish(
@@ -138,6 +139,7 @@ for i in range(5):
         # except Exception as err:
         #     print(f"{err}")
         #     print("error for mqtt publish")
+        
     print(i)
     
     # time.sleep(0.1)
