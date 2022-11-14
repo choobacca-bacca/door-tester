@@ -106,12 +106,12 @@ for i in range(3600):
 
         try:
             publish_future, packet_id = mqtt_connection.publish(
-                topic=(config["mqtt"]["get-topic"] +
+                topic=(config["mqtt"]["topic"] +
                        config["doors"][door] + "/data"),
                 payload=json.dumps(data),
                 qos=mqtt.QoS.AT_LEAST_ONCE,
             )
-            print("published to topic " + config["mqtt"]["get-topic"] +
+            print("published to topic " + config["mqtt"]["topic"] +
                   config["doors"][door] + "/data")
         except (KeyboardInterrupt, SystemExit):
             print ("\nkeyboardinterrupt caught (again)")
@@ -120,7 +120,7 @@ for i in range(3600):
         except Exception as err:
             print(f"{err}")
             print("error for mqtt publish")
-            print("published to topic " + config["mqtt"]["get-topic"] +
+            print("published to topic " + config["mqtt"]["topic"] +
                   config["doors"][door] + "/data")
         
 
