@@ -75,7 +75,7 @@ start = time.time()
 interval = 0.5
 
 
-for i in range(3600):
+for i in range(1):
 #    time.sleep(1)
     if(time.time() - start > interval):
         for door in config["doors"]:
@@ -118,6 +118,7 @@ for i in range(3600):
                 "door_name": door,
                 "current_mode": door_mode
             }
+        start = time.time()
 
         # try:
         #     publish_future, packet_id = mqtt_connection.publish(
@@ -136,6 +137,7 @@ for i in range(3600):
         #     print(f"{err}")
         #     print("error for mqtt publish")
     print(i)
+    
     # time.sleep(0.1)
 
     # remaining = max + start - time.time()
