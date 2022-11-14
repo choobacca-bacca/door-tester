@@ -66,9 +66,9 @@ session = requests.Session()
 session.auth = ("root", "00000000")
 
 for i in range(3600):
+    time.sleep(1)
     for door in config["doors"]:
         try:
-            print(config["doors"][door]+"/digitalinput/0/value")
             response = session.get(
                 config["doors"][door]+"/digitalinput/0/value", timeout=10)
             successOne = True
@@ -91,9 +91,9 @@ for i in range(3600):
         door_mode = 0
 
         if (successOne and successTwo):
-            if (DIPinOne == 1):
+            if (DIPinOne == "1"):
                 door_mode = 0  # door is closed
-            elif (DIPinTwo == 1):
+            elif (DIPinTwo == "1"):
                 door_mode = 2  # door is open
             else:
                 door_mode = 1  # door is moving
@@ -124,4 +124,4 @@ for i in range(3600):
         
 
     print(i)
-    time.sleep(1)
+    
