@@ -72,50 +72,52 @@ session.auth = ("root", "00000000")
 
 max = 31
 start = time.time()
+interval = 0.5
 
 
 for i in range(3600):
 #    time.sleep(1)
-    for door in config["doors"]:
-        try:
-            response = session.get(
-                config["doors"][door]+"/digitalinput/0/value", timeout=5)
-            successOne = True
-            print(response.status_code)
-            responseJSON = xmltodict.parse(response.content)
-            DIPinOne = responseJSON["ADAM-6052"]["DI"]["ID"]
-        except Exception as err:
-            print(f"{err}")
-            successOne = False
-            print("error for restful call 1")
+    if(time.time() - start > interval):
+        for door in config["doors"]:
+            try:
+                response = session.get(
+                    config["doors"][door]+"/digitalinput/0/value", timeout=5)
+                successOne = True
+                print(response.status_code)
+                responseJSON = xmltodict.parse(response.content)
+                DIPinOne = responseJSON["ADAM-6052"]["DI"]["ID"]
+            except Exception as err:
+                print(f"{err}")
+                successOne = False
+                print("error for restful call 1")
 
-        try:
-            response = session.get(
-                config["doors"][door]+"/digitalinput/1/value", timeout=5)
-            successTwo = True
-            print(response.status_code)
-            responseJSON = xmltodict.parse(response.content)
-            DIPinTwo = responseJSON["ADAM-6052"]["DI"]["ID"]
-        except Exception as err:
-            print(f"{err}")
-            print("error for restful call 2")
+            try:
+                response = session.get(
+                    config["doors"][door]+"/digitalinput/1/value", timeout=5)
+                successTwo = True
+                print(response.status_code)
+                responseJSON = xmltodict.parse(response.content)
+                DIPinTwo = responseJSON["ADAM-6052"]["DI"]["ID"]
+            except Exception as err:
+                print(f"{err}")
+                print("error for restful call 2")
 
-        door_mode = 0
+            door_mode = 0
 
-        if (successOne and successTwo):
-            if (DIPinTwo == "1"):
-                door_mode = 0  # door is closed
-            elif (DIPinOne == "1"):
-                door_mode = 2  # door is open
+            if (successOne and successTwo):
+                if (DIPinTwo == "1"):
+                    door_mode = 0  # door is closed
+                elif (DIPinOne == "1"):
+                    door_mode = 2  # door is open
+                else:
+                    door_mode = 1  # door is moving
             else:
-                door_mode = 1  # door is moving
-        else:
-            door_mode = 3
+                door_mode = 3
 
-        data = {
-            "door_name": door,
-            "current_mode": door_mode
-        }
+            data = {
+                "door_name": door,
+                "current_mode": door_mode
+            }
 
         # try:
         #     publish_future, packet_id = mqtt_connection.publish(
@@ -134,12 +136,12 @@ for i in range(3600):
         #     print(f"{err}")
         #     print("error for mqtt publish")
     print(i)
-    time.sleep(0.1)
+    # time.sleep(0.1)
 
-    remaining = max + start - time.time()
+    # remaining = max + start - time.time()
 
-    if remaining <= 0:
-        break
+    # if remaining <= 0:
+    #     break
 
         # try:
         #     subscribe_future, packet_id = mqtt_connection.subscribe(
