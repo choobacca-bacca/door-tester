@@ -77,9 +77,11 @@ for i in range(3600):
             response = session.get(
                 config["doors"][door]+"/digitalinput/0/value", timeout=1)
             successOne = True
+            print(response.status_code)
             responseJSON = xmltodict.parse(response.content)
             DIPinOne = responseJSON["ADAM-6052"]["DI"]["ID"]
-        except:
+        except Exception as err:
+            print(f"{err}")
             successOne = False
             print("error for restful call 1")
 
@@ -87,10 +89,11 @@ for i in range(3600):
             response = session.get(
                 config["doors"][door]+"/digitalinput/1/value", timeout=1)
             successTwo = True
+            print(response.status_code)
             responseJSON = xmltodict.parse(response.content)
             DIPinTwo = responseJSON["ADAM-6052"]["DI"]["ID"]
-        except:
-            successTwo = False
+        except Exception as err:
+            print(f"{err}")
             print("error for restful call 2")
 
         door_mode = 0
