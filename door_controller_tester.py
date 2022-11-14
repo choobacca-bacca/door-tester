@@ -66,7 +66,7 @@ session = requests.Session()
 session.auth = ("root", "00000000")
 
 for i in range(3600):
-    time.sleep(1)
+    time.sleep(5)
     for door in config["doors"]:
         try:
             response = session.get(
@@ -121,7 +121,20 @@ for i in range(3600):
         except Exception as err:
             print(f"{err}")
             print("error for mqtt publish")
-        
 
-    print(i)
+        try:
+            subscribe_future, packet_id = mqtt_connection.subscribe(
+                topic=config["mqtt"]["topic"] + door + "/command",
+                qos=mqtt.QoS.AT_LEAST_ONCE,
+                callback=on_message_received,
+            )
+            if (response["requested_mode"] == "1"):
+                door_request = {"DO0=" + response["requested_mode"]}
+                session.post(config["doors"][door]+"/digitaloutput/all/value", timeout=10, data="D01=0")
+                session.post(config["doors"][door]+"/digitaloutput/all/value", timeout=10, data=door_request)
+
+        except Exception as err:
+            print(f"{err}")
+            print("error for mqtt publish")
+
     
