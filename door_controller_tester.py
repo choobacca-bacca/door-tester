@@ -14,6 +14,7 @@ import yaml
 from awscrt import auth, http, io, mqtt
 from awsiot import mqtt_connection_builder
 
+#sudo apt install libcairo2-dev pkg-config python3-dev
 
 def status_publisher(mqtt_connect, rest_session):
     DIPinOne = ""
