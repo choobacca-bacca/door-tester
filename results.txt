@@ -7,3 +7,51 @@ failed responses = 5
 time started: 2022-11-08 22:13:11.254883
 successful responses = 0
 failed responses = 5
+
+time started: 2022-11-12 03:25:28.087476
+successful responses = 10
+failed responses = 0
+
+time started: 2022-11-12 03:29:41.415506
+successful responses = 4
+failed responses = 1
+
+time started: 2022-11-12 03:31:45.214038
+successful responses = 5
+failed responses = 0
+
+time started: 2022-11-12 03:35:18.837552
+successful responses = 4
+failed responses = 1
+
+time started: 2022-11-12 03:38:25.751018
+successful responses = 4
+failed responses = 1
+
+time started: 2022-11-12 03:39:35.953127
+successful responses = 5
+failed responses = 0
+
+time started: 2022-11-12 03:40:11.404480
+successful responses = 5
+failed responses = 0
+
+time started: 2022-11-12 03:43:31.177639
+successful responses = 19
+failed responses = 1
+
+time started: 2022-11-12 03:47:39.167259
+successful responses = 20
+failed responses = 0
+
+time started: 2022-11-12 11:08:19.796107
+successful responses = 7152
+failed responses = 48
+
+time started: 2022-11-12 12:30:16.116009
+successful responses = 3552
+failed responses = 48
+
+time started: 2022-11-13 01:09:28.954224
+successful responses = 24667
+failed responses = 333
