@@ -119,7 +119,7 @@ def command_subscriber(mqtt_connect, rest_session):
                     rest_resp = rest_session.post(
                         config["doors"][door]+"/digitaloutput/all/value", timeout=10, data="DO1=0")
                     print(rest_resp)
-                    time.sleep(0.1)
+                    time.sleep(2.5)
                     rest_resp = rest_session.post(
                         config["doors"][door]+"/digitaloutput/all/value", timeout=10, data="DO1=1")
                     print(rest_resp)
@@ -130,7 +130,7 @@ def command_subscriber(mqtt_connect, rest_session):
                     print("door closed")
                     print(rest_resp)
                     mqtt_response = {}
-                    
+
             except (KeyboardInterrupt, SystemExit):
                 print("\nkeyboardinterrupt caught (again)")
                 print("\n...Program Stopped Manually!")
