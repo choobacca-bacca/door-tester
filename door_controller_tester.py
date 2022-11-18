@@ -16,7 +16,7 @@ from awsiot import mqtt_connection_builder
 
 #sudo apt install libcairo2-dev pkg-config python3-dev
 
-def status_publisher(mqtt_connect, rest_session):
+def status_publisher(mqtt_connect, rest_session, config_file):
     DIPinOne = ""
     DIPinTwo = ""
     successOne = True
@@ -30,10 +30,10 @@ def status_publisher(mqtt_connect, rest_session):
         # print(str(time.time() - start))
         if (time.time() - start > interval):
             print(time.time() - start)
-            for door in config["doors"]:
+            for door in config_file["doors"]:
                 try:
                     response = rest_session.get(
-                        config["doors"][door]+"/digitalinput/0/value", timeout=(5, 30))
+                        config_file["doors"][door]+"/digitalinput/0/value", timeout=(5, 30))
                     successOne = True
                     print(response.status_code)
                     responseJSON = xmltodict.parse(response.content)
@@ -45,7 +45,7 @@ def status_publisher(mqtt_connect, rest_session):
 
                 try:
                     response = rest_session.get(
-                        config["doors"][door]+"/digitalinput/1/value", timeout=(5, 30))
+                        config_file["doors"][door]+"/digitalinput/1/value", timeout=(5, 30))
                     successTwo = True
                     print(response.status_code)
                     responseJSON = xmltodict.parse(response.content)
@@ -76,12 +76,12 @@ def status_publisher(mqtt_connect, rest_session):
 
             try:
                 publish_future, packet_id = mqtt_connect.publish(
-                    topic=(config["mqtt"]["topic"] +
+                    topic=(config_file["mqtt"]["topic"] +
                            door + "/data"),
                     payload=json.dumps(data),
                     qos=mqtt.QoS.AT_LEAST_ONCE,
                 )
-                print("published to topic " + config["mqtt"]["topic"] +
+                print("published to topic " + config_file["mqtt"]["topic"] +
                       door + "/data")
             except (KeyboardInterrupt, SystemExit):
                 print("\nkeyboardinterrupt caught (again)")
@@ -92,7 +92,7 @@ def status_publisher(mqtt_connect, rest_session):
                 print("error for mqtt publish")
 
 
-def command_subscriber(mqtt_connect, rest_session):
+def command_subscriber(mqtt_connect, rest_session, config_file):
     global mqtt_response
     mqtt_response = {}
 
@@ -102,11 +102,11 @@ def command_subscriber(mqtt_connect, rest_session):
         return mqtt_response
 
     while (True):
-        for door in config["doors"]:
+        for door in config_file["doors"]:
             time.sleep(1)
             try:
                 subscribe_future, packet_id = mqtt_connect.subscribe(
-                    topic=config["mqtt"]["topic"] + door + "/command",
+                    topic=config_file["mqtt"]["topic"] + door + "/command",
                     qos=mqtt.QoS.AT_LEAST_ONCE,
                     callback=on_message_received,
                 )
@@ -115,19 +115,19 @@ def command_subscriber(mqtt_connect, rest_session):
                 if (mqtt_response == {}):
                     print("empty")
                     rest_session.post(
-                        config["doors"][door]+"/digitaloutput/all/value", timeout=10, data="DO1=0")
+                        config_file["doors"][door]+"/digitaloutput/all/value", timeout=10, data="DO1=0")
                 elif (mqtt_response["requested_mode"] == "2"):
                     rest_resp = rest_session.post(
-                        config["doors"][door]+"/digitaloutput/all/value", timeout=10, data="DO1=0")
+                        config_file["doors"][door]+"/digitaloutput/all/value", timeout=10, data="DO1=0")
                     print(rest_resp)
                     time.sleep(2.5)
                     rest_resp = rest_session.post(
-                        config["doors"][door]+"/digitaloutput/all/value", timeout=10, data="DO1=1")
+                        config_file["doors"][door]+"/digitaloutput/all/value", timeout=10, data="DO1=1")
                     print(rest_resp)
                     print("door opened")
                 else:
                     rest_resp = rest_session.post(
-                        config["doors"][door]+"/digitaloutput/all/value", timeout=10, data="DO1=0")
+                        config_file["doors"][door]+"/digitaloutput/all/value", timeout=10, data="DO1=0")
                     print("door closed")
                     print(rest_resp)
                     mqtt_response = {}
@@ -186,8 +186,8 @@ if __name__ == "__main__":
     session = requests.Session()
     session.auth = ("root", "00000000")
     # creating thread
-    t1 = threading.Thread(target=status_publisher, args=(mqtt_connection, session))
-    t2 = threading.Thread(target=command_subscriber, args=(mqtt_connection, session))
+    t1 = threading.Thread(target=status_publisher, args=(mqtt_connection, session, config))
+    t2 = threading.Thread(target=command_subscriber, args=(mqtt_connection, session, config))
 
     # starting thread 1
     t1.start()

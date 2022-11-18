@@ -1,14 +1,17 @@
 mqtt:
   topic: "nlb/trl/528523/oth/door/"
   api_endpoint: a1i24hje2n1ej1-ats.iot.ap-southeast-1.amazonaws.com
-  cert: /home/ubuntu/.certs/doors/device.pem.crt
-  key: /home/ubuntu/.certs/doors/private.pem.key
-  root_cert: /home/ubuntu/.certs/doors/Amazon-root-CA-1.pem
+  cert: /usr/src/app/.certs/doors/device.pem.crt
+  key: /usr/src/app/.certs/doors/private.pem.key
+  root_cert: /usr/src/app/.certs/doors/Amazon-root-CA-1.pem
+  # cert: /home/ubuntu/.certs/doors/device.pem.crt
+  # key: /home/ubuntu/.certs/doors/private.pem.key
+  # root_cert: /home/ubuntu/.certs/doors/Amazon-root-CA-1.pem
   name: LocalRMFLaptopDoorController
 
 doors:  
-  # service_lobby_L2_door: http://169.254.170.22
-  service_lobby_L3_door: http://169.254.170.22
-  # service_lobby_L4_door: http://169.254.170.23
+  # service_lobby_L2_door: http://169.254.170.20
+  # service_lobby_L3_door: http://169.254.170.21
+  service_lobby_L4_door: http://169.254.170.22
   # service_lift_L5_door: http://169.254.170.24
-  # service_lobby_L6_door: http://169.254.170.20
+  # service_lobby_L6_door: http://169.254.170.23
