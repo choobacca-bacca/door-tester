@@ -129,6 +129,10 @@ def command_subscriber(mqtt_connect, rest_session, config_file):
                     rest_resp = rest_session.post(
                         config_file["doors"][door]+"/digitaloutput/all/value", timeout=10, data="DO1=1")
                     print(rest_resp)
+                    time.sleep(2.5)
+                    rest_resp = rest_session.post(
+                        config_file["doors"][door]+"/digitaloutput/all/value", timeout=10, data="DO1=0")
+                    print(rest_resp)
                     print("door opened")
                 else:
                     rest_resp = rest_session.post(
