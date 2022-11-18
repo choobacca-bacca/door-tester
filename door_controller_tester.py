@@ -107,7 +107,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
     f.write("\n")
     f.write("\n")
     f.write("The start time of the test run is" + str(currentTime) + "\n")
-    f.write("The end time of the test run is" + str(datetime.datetime()) + "\n")
+    f.write("The end time of the test run is" + str(datetime.now()) + "\n")
     f.write("Success: " + str(successCount) + "\n")
     f.write("Fail: " + str(failCount) + "\n")
     f.close()
