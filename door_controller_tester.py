@@ -30,7 +30,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
     i = 0
     start = time.time()
     interval = 1.0
-    while (i < 5):
+    while (i < 36000):
         #    time.sleep(1
         # print(str(time.time() - start))
         if (time.time() - start > interval):
