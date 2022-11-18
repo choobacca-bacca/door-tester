@@ -7,6 +7,7 @@ import sys
 import threading
 import time
 from typing import Optional
+from datetime import datetime
 
 import requests
 import xmltodict
@@ -21,6 +22,10 @@ def status_publisher(mqtt_connect, rest_session, config_file):
     DIPinTwo = ""
     successOne = True
     successTwo = True
+    successCount = 0
+    failCount = 0
+    currentTime = datetime.now()
+    print(currentTime)
 
     i = 0
     start = time.time()
@@ -61,6 +66,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
                 if (successOne and successTwo):
                     print("DPInOne = " + DIPinOne)
                     print("DPInTwo = " + DIPinTwo)
+                    successCount += 1
                     if (DIPinOne == "1"):
                         door_mode = 2  # door is fully open
                     elif (DIPinTwo == "1"):
@@ -69,6 +75,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
                         door_mode = 1  # door is moving
                 else:
                     door_mode = 3
+                    failCount += 1
 
                 data = {
                     "door_name": door,
@@ -95,6 +102,15 @@ def status_publisher(mqtt_connect, rest_session, config_file):
             except Exception as err:
                 print(f"{err}")
                 print("error for mqtt publish")
+
+    f = open("results.txt", "a")
+    f.write("\n")
+    f.write("\n")
+    f.write("The start time of the test run is" + str(currentTime) + "\n")
+    f.write("The end time of the test run is" + str(datetime.datetime()) + "\n")
+    f.write("Success: " + str(successCount) + "\n")
+    f.write("Fail: " + str(failCount) + "\n")
+    f.close()
 
 
 def command_subscriber(mqtt_connect, rest_session, config_file):
