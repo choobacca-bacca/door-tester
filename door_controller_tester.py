@@ -57,9 +57,10 @@ def status_publisher(mqtt_connect, rest_session, config_file):
                 door_mode = 0
 
                 if (successOne and successTwo):
+                    print("DPInOne = " + DIPinOne)
+                    print("DPInTwo = " + DIPinTwo)
                     if (DIPinOne == "1"):
                         door_mode = 2  # door is fully open
-                        
                     elif (DIPinTwo == "1"):
                         door_mode = 1  # door is fully closed
                     else:
