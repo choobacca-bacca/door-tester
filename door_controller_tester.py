@@ -24,7 +24,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
     successTwo = True
     successCount = 0
     failCount = 0
-    currentTime = datetime.now() + timedelta(hours=9)
+    currentTime = datetime.now() + timedelta(hours=8)
     print(currentTime)
 
     i = 0
@@ -107,7 +107,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
     f.write("\n")
     f.write("\n")
     f.write("The start time of the test run is " + str(currentTime) + "\n")
-    f.write("The end time of the test run is " + str(datetime.now() + timedelta(hours=9)) + "\n")
+    f.write("The end time of the test run is " + str(datetime.now() + timedelta(hours=8)) + "\n")
     f.write("Success: " + str(successCount) + "\n")
     f.write("Fail: " + str(failCount) + "\n")
     f.close()
