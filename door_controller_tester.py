@@ -35,7 +35,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
                     response = rest_session.get(
                         config_file["doors"][door]+"/digitalinput/1/value", timeout=(5, 30)) #read if door is fully open
                     successOne = True
-                    print(response.status_code)
+                    # print(response.status_code)
                     responseJSON = xmltodict.parse(response.content)
                     DIPinOne = responseJSON["ADAM-6052"]["DI"]["ID"]
                 except Exception as err:
@@ -47,7 +47,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
                     response = rest_session.get(
                         config_file["doors"][door]+"/digitalinput/2/value", timeout=(5, 30)) #read if door is fully closed
                     successTwo = True
-                    print(response.status_code)
+                    # print(response.status_code)
                     responseJSON = xmltodict.parse(response.content)
                     DIPinTwo = responseJSON["ADAM-6052"]["DI"]["ID"]
                 except Exception as err:
@@ -59,6 +59,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
                 if (successOne and successTwo):
                     if (DIPinOne == "1"):
                         door_mode = 2  # door is fully open
+                        
                     elif (DIPinTwo == "1"):
                         door_mode = 1  # door is fully closed
                     else:
@@ -70,9 +71,10 @@ def status_publisher(mqtt_connect, rest_session, config_file):
                     "door_name": door,
                     "current_mode": door_mode
                 }
+                print(data)
             start = time.time()
             i += 1
-            print(i)
+            # print(i)
 
             try:
                 publish_future, packet_id = mqtt_connect.publish(
