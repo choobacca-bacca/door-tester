@@ -37,6 +37,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
                     successOne = True
                     # print(response.status_code)
                     responseJSON = xmltodict.parse(response.content)
+                    print(responseJSON)
                     DIPinOne = responseJSON["ADAM-6052"]["DI"]["ID"]
                 except Exception as err:
                     print(f"{err}")
@@ -49,6 +50,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
                     successTwo = True
                     # print(response.status_code)
                     responseJSON = xmltodict.parse(response.content)
+                    print(responseJSON)
                     DIPinTwo = responseJSON["ADAM-6052"]["DI"]["ID"]
                 except Exception as err:
                     print(f"{err}")
