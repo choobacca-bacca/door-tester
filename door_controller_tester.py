@@ -33,7 +33,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
             for door in config_file["doors"]:
                 try:
                     response = rest_session.get(
-                        config_file["doors"][door]+"/digitalinput/0/value", timeout=(5, 30))
+                        config_file["doors"][door]+"/digitalinput/1/value", timeout=(5, 30)) #read if door is fully open
                     successOne = True
                     print(response.status_code)
                     responseJSON = xmltodict.parse(response.content)
@@ -45,7 +45,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
 
                 try:
                     response = rest_session.get(
-                        config_file["doors"][door]+"/digitalinput/1/value", timeout=(5, 30))
+                        config_file["doors"][door]+"/digitalinput/2/value", timeout=(5, 30)) #read if door is fully closed
                     successTwo = True
                     print(response.status_code)
                     responseJSON = xmltodict.parse(response.content)
@@ -57,10 +57,10 @@ def status_publisher(mqtt_connect, rest_session, config_file):
                 door_mode = 0
 
                 if (successOne and successTwo):
-                    if (DIPinTwo == "1"):
-                        door_mode = 0  # door is closed
-                    elif (DIPinOne == "1"):
-                        door_mode = 2  # door is open
+                    if (DIPinOne == "1"):
+                        door_mode = 2  # door is fully open
+                    elif (DIPinTwo == "1"):
+                        door_mode = 1  # door is fully closed
                     else:
                         door_mode = 1  # door is moving
                 else:

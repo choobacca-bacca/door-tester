@@ -12,6 +12,6 @@ mqtt:
 doors:  
   # service_lobby_L2_door: http://169.254.170.20
   # service_lobby_L3_door: http://169.254.170.21
-  service_lobby_L4_door: http://169.254.170.22
-  # service_lift_L5_door: http://169.254.170.24
+  # service_lobby_L4_door: http://169.254.170.22
+  trl_lvl_5_door: http://169.254.170.24
   # service_lobby_L6_door: http://169.254.170.23
