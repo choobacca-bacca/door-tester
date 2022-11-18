@@ -38,7 +38,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
                     # print(response.status_code)
                     responseJSON = xmltodict.parse(response.content)
                     print(responseJSON)
-                    DIPinOne = responseJSON["ADAM-6052"]["DI"]["ID"]
+                    DIPinOne = responseJSON["ADAM-6052"]["DI"]["VALUE"]
                 except Exception as err:
                     print(f"{err}")
                     successOne = False
@@ -51,7 +51,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
                     # print(response.status_code)
                     responseJSON = xmltodict.parse(response.content)
                     print(responseJSON)
-                    DIPinTwo = responseJSON["ADAM-6052"]["DI"]["ID"]
+                    DIPinTwo = responseJSON["ADAM-6052"]["DI"]["VALUE"]
                 except Exception as err:
                     print(f"{err}")
                     print("error for restful call 2")
