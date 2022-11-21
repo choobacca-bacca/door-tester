@@ -1,0 +1,13 @@
+mqtt:
+  topic: "nlb/trl/528523/oth/door/"
+  api_endpoint: a1i24hje2n1ej1-ats.iot.ap-southeast-1.amazonaws.com
+  cert: /home/ubuntu/door-tester/.certs/doors/device.pem.crt
+  key: /home/ubuntu/door-tester/.certs/doors/private.pem.key
+  root_cert: /home/ubuntu/door-tester/.certs/doors/Amazon-root-CA-1.pem
+  # cert: /home/ubuntu/.certs/doors/device.pem.crt
+  # key: /home/ubuntu/.certs/doors/private.pem.key
+  # root_cert: /home/ubuntu/.certs/doors/Amazon-root-CA-1.pem
+  name: TRLLvl5Door
+
+doors:  
+  trl_lvl_2_door: http://169.254.170.20

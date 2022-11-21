@@ -7,11 +7,7 @@ mqtt:
   # cert: /home/ubuntu/.certs/doors/device.pem.crt
   # key: /home/ubuntu/.certs/doors/private.pem.key
   # root_cert: /home/ubuntu/.certs/doors/Amazon-root-CA-1.pem
-  name: LocalRMFLaptopDoorController
+  name: TRLLvl3Door
 
 doors:  
-  # service_lobby_L2_door: http://169.254.170.20
-  # service_lobby_L3_door: http://169.254.170.21
-  # service_lobby_L4_door: http://169.254.170.22
-  trl_lvl_5_door: http://192.168.31.10
-  # service_lobby_L6_door: http://169.254.170.23
+  trl_lvl_3_door: http://169.254.170.21

@@ -15,4 +15,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 
-CMD [ "python3", "door_controller_tester.py", "--host=0.0.0.0"]
+CMD [ "python3", "door_controller_tester.py", "-c", "./config/$configname"]

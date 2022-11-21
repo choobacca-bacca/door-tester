@@ -9,6 +9,7 @@ import time
 from typing import Optional
 from datetime import datetime, timedelta
 
+import argparse
 import requests
 import xmltodict
 import yaml
@@ -30,7 +31,7 @@ def status_publisher(mqtt_connect, rest_session, config_file):
     i = 0
     start = time.time()
     interval = 1.0
-    while (i < 36000):
+    while (True):
         #    time.sleep(1
         # print(str(time.time() - start))
         if (time.time() - start > interval):
@@ -165,7 +166,11 @@ def command_subscriber(mqtt_connect, rest_session, config_file):
 
 if __name__ == "__main__":
 
-    with open("config.yaml", 'r') as stream:
+    parser = argparse.ArgumentParser(description="The door controller for the ADAM-6052 module from HopeTechnik")
+    parser.add_argument("-c", "--config_file", help="The config file for the door controller", required=True)
+    args = parser.parse_args()
+
+    with open(args.config_file, 'r') as stream:
         try:
             config = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
@@ -208,17 +213,17 @@ if __name__ == "__main__":
     session.auth = ("root", "00000000")
     # creating thread
     t1 = threading.Thread(target=status_publisher, args=(mqtt_connection, session, config))
-    # t2 = threading.Thread(target=command_subscriber, args=(mqtt_connection, session, config))
+    t2 = threading.Thread(target=command_subscriber, args=(mqtt_connection, session, config))
 
     # starting thread 1
     t1.start()
     # starting thread 2
-    # t2.start()
+    t2.start()
 
     # wait until thread 1 is completely executed
     t1.join()
     # wait until thread 2 is completely executed
-    # t2.join()
+    t2.join()
 
     # both threads completely executed
     print("Done!")
